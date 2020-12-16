@@ -16,9 +16,6 @@ namespace MazeGame
             this.Weapon = weapon;
             this.IsPlayer = true;
         }
-        //public override string ToString()
-        //{
-        //    return $"Player: {CharacterName,10} | " + base.ToString();
-        //}
+        
     }
 }

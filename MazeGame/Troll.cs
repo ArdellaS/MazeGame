@@ -15,9 +15,6 @@ namespace MazeGame
             this.Weapon = weapon;
             this.WeaknessMod = Arsenal.GreatSword;
         }
-        //public override string ToString()
-        //{
-        //    return $"{"",15} | " + base.ToString();
-        //}
+       
     }
 }

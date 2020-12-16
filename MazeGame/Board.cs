@@ -37,7 +37,8 @@ namespace MazeGame
         {
             var doorHeight = YPosition();
             var doorWidth = XPosition();
-
+            int count = 0;
+            
 
             while (true)
             {
@@ -60,7 +61,7 @@ namespace MazeGame
                 gridWorld[doorHeight, doorWidth] = 'O';
                 //gridWorld[door, door] = '}';
                 var player = gridWorld[Y, X] = 'I';
-                var enemy1 = gridWorld[mon1Y, mon1X] = 'X';
+                //var enemy1 = gridWorld[mon1Y, mon1X] = 'X';
                 //var enemy2 = gridWorld[mon2Y, mon2X] = 'X';
                 if ((Y == mon1Y && X == mon1X) || (X == doorWidth && Y == doorHeight))
                 {
@@ -68,6 +69,7 @@ namespace MazeGame
                     {
                         doorHeight = YPosition();
                         doorWidth = XPosition();
+                        count++;
                     }
                     characterList.RandomMonster();
                     Console.WriteLine($"A {characterList.ReturnList()[1].Job} approaches for a fight!\n\nPress enter to start the fight!");
@@ -103,11 +105,18 @@ namespace MazeGame
                             //BattleField.AddHealth(characterList.ReturnList());
                         }
                     }
-                    Console.WriteLine($"YOU DIED! GAME OVER!\nYou have defeated {characterList.ReturnList().Count - 2} monters!\n\n");
-                    BattleDisplay.DisplayDead(characterList.ReturnList());
+                    if (!characterList.ReturnList()[0].IsAlive)
+                    {
+                        Console.WriteLine($"YOU DIED! GAME OVER!\nYou have defeated {characterList.ReturnList().Count - 2} monters and collected {count} rings!!\n\n");
+                        BattleDisplay.DisplayDead(characterList.ReturnList());
+                        Console.WriteLine("Press anykey to restart...");
+                        Console.Read();
+                    }
+                    
 
                 }
                 Console.Clear();
+                Console.WriteLine("Collect the rings!\n");
                 for (int i = 0; i < gridHeight; i++)
                 {
                     for (int j = 0; j < gridWidth; j++)

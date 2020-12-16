@@ -8,7 +8,7 @@ namespace MazeGame
     {
         public static List<Character> characters = new List<Character>(); // list of heros
 
-        string name, job;
+        string name;
         int strength, dexterity, intelligence, attackMod;
         Arsenal weakenesMod = Arsenal.None;
         int basePlayerHP = 25;
