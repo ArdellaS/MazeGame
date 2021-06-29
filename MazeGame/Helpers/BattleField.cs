@@ -1,36 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using MazeGame.Set_Up;
 
-namespace MazeGame
+namespace MazeGame.Helpers
 {
     public static class BattleField
     {
-        static int hitRoll = 0;
-        static int attackDice = 0;
-        static int totalRoll = 0;
-        static double dmgDealt = 0;
+        static int _hitRoll;
+        static int _attackDice;
+        static int _totalRoll;
+        static double _dmgDealt;
         public static void PlayerCombat(List<Character> characters, int attackSelection)
         {
 
-            if (Hit(characters[0].AttackMod, characters[characters.Count - 1].Armor, attackSelection, out hitRoll) == true)
+            if (Hit(characters[0].AttackMod, characters[^1].Armor, attackSelection, out _hitRoll))
             {
                 bool isCrit = false;
-                dmgDealt = Damage(characters[0].Weapon, characters[characters.Count - 1].WeaknessMod, characters[0].AttackMod, out attackDice);
+                _dmgDealt = Damage(characters[0].Weapon, characters[^1].WeaknessMod, characters[0].AttackMod, out _attackDice);
                 if (attackSelection == 2)
                 {
-                    dmgDealt = Math.Round(dmgDealt * 1.25,2);
+                    _dmgDealt = Math.Round(_dmgDealt * 1.25, 2);
                 }
-                if (hitRoll == 20)
+                if (_hitRoll == 20)
                 {
-                    dmgDealt *= 2;
+                    _dmgDealt *= 2;
                     isCrit = true;
                 }
 
-                characters[characters.Count - 1].HitPoints -= dmgDealt;
-                if (characters[characters.Count - 1].HitPoints < 0)
+                characters[^1].HitPoints -= _dmgDealt;
+                if (characters[^1].HitPoints < 0)
                 {
-                    characters[characters.Count - 1].HitPoints = 0;
+                    characters[^1].HitPoints = 0;
                 }
                 Console.Clear();
                 BattleDisplay.UI(characters);
@@ -38,26 +38,24 @@ namespace MazeGame
                 {
                     Console.WriteLine("\nCritical Hit! You have done double damage!\n");
                 }
-                Console.WriteLine($"{characters[0].CharacterName} rolled a {hitRoll} breaking through enemy defense.\n" +
-                    $"Damage dice roll is {attackDice} using a {characters[0].Weapon} and hit {characters[characters.Count - 1].Job} dealing {dmgDealt} damage!\n");
-                
-                characters[characters.Count - 1].IsAlive = Death(characters[characters.Count - 1].HitPoints);
+                Console.WriteLine($"{characters[0].CharacterName} rolled a {_hitRoll} breaking through enemy defense.\n" +
+                    $"Damage dice roll is {_attackDice} using a {characters[0].Weapon} and hit {characters[^1].Job} dealing {_dmgDealt} damage!\n");
+
+                characters[^1].IsAlive = Death(characters[^1].HitPoints);
 
             }
             else
             {
-                Console.WriteLine($"{characters[0].CharacterName} rolled a {hitRoll} and missed with their {characters[0].Weapon}\n");
+                Console.WriteLine($"{characters[0].CharacterName} rolled a {_hitRoll} and missed with their {characters[0].Weapon}\n");
             }
         }
         public static void EnemyCombat(List<Character> characters)
         {
-            double dmgDealt;
-
-            if (Hit(characters[characters.Count - 1].AttackMod, characters[0].Armor, 1, out hitRoll) == true)
+            if (Hit(characters[^1].AttackMod, characters[0].Armor, 1, out _hitRoll))
             {
                 bool isCrit = false;
-                dmgDealt = Damage(characters[characters.Count - 1].Weapon, characters[0].WeaknessMod, characters[characters.Count - 1].AttackMod, out attackDice);
-                if (hitRoll == 20)
+                var dmgDealt = Damage(characters[^1].Weapon, characters[0].WeaknessMod, characters[^1].AttackMod, out _attackDice);
+                if (_hitRoll == 20)
                 {
                     dmgDealt *= 2;
                     isCrit = true;
@@ -75,25 +73,25 @@ namespace MazeGame
                 {
                     Console.WriteLine("\nCritical Hit! Monster does double damage!\n");
                 }
-                Console.WriteLine($"{characters[characters.Count - 1].Job} rolled a {hitRoll} breaking through your defenses.\n" +
-                    $"Damage dice roll is {attackDice} using a {characters[characters.Count - 1].Weapon} and hit {characters[0].CharacterName} dealing {dmgDealt} damage!\n");
+                Console.WriteLine($"{characters[^1].Job} rolled a {_hitRoll} breaking through your defenses.\n" +
+                    $"Damage dice roll is {_attackDice} using a {characters[^1].Weapon} and hit {characters[0].CharacterName} dealing {dmgDealt} damage!\n");
 
                 characters[0].IsAlive = Death(characters[0].HitPoints);
 
             }
             else
             {
-                Console.WriteLine($"{characters[characters.Count - 1].Job} rolled a {hitRoll} and missed with their {characters[characters.Count - 1].Weapon}\n");
-}
+                Console.WriteLine($"{characters[^1].Job} rolled a {_hitRoll} and missed with their {characters[^1].Weapon}\n");
+            }
         }
         public static bool Hit(int attackMod, int Armor, int attackSelection, out int hitRoll)
         {
-            
+
             if (attackSelection == 1)
             {
                 hitRoll = Dice.D20();
-                totalRoll = hitRoll + attackMod;
-                if (totalRoll >= Armor)
+                _totalRoll = hitRoll + attackMod;
+                if (_totalRoll >= Armor)
                 {
                     return true;
                 }
@@ -105,8 +103,8 @@ namespace MazeGame
             else
             {
                 hitRoll = Dice.D20();
-                totalRoll = hitRoll + attackMod;
-                if (totalRoll - 2 >= Armor)
+                _totalRoll = hitRoll + attackMod;
+                if (_totalRoll - 2 >= Armor)
                 {
                     return true;
                 }
@@ -116,7 +114,7 @@ namespace MazeGame
                 }
             }
 
-            
+
         }
         public static double Damage(Arsenal weapon, Arsenal weaknessMod, int attackMod, out int attackDice)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MazeGame.Set_Up;
 
 namespace MazeGame
 {
@@ -9,8 +10,7 @@ namespace MazeGame
         static void Main(string[] args)
         {
             Console.SetWindowSize(140, 45);
-
-            CharacterList characterList = new CharacterList();
+            
             Board board = new Board();
 
             board.GamePlay();

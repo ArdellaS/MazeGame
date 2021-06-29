@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using MazeGame.Helpers;
 
-namespace MazeGame
+namespace MazeGame.Set_Up
 {
     public static class BattleDisplay
     {
@@ -20,11 +20,11 @@ namespace MazeGame
 
         private static void DisplayMonster(List<Character> characters)
         {
-            if (characters[characters.Count - 1].Job == "Troll")
+            if (characters[^1].Job == "Troll")
             {
                 Console.WriteLine(TrollArt());
             }
-            else if (characters[characters.Count - 1].Job == "Goblin")
+            else if (characters[^1].Job == "Goblin")
             {
                 Console.WriteLine(GoblinArt());
             }
@@ -59,7 +59,7 @@ namespace MazeGame
         {
             if (characters.Count > 2)
             {
-                Console.WriteLine($"These are all the mosters slain by {characters[0].CharacterName} the {characters[0].Job}.");
+                Console.WriteLine($"These are all the monsters slain by {characters[0].CharacterName} the {characters[0].Job}.");
 
                 foreach (Character c in characters)
                 {
@@ -76,8 +76,8 @@ namespace MazeGame
         }
         public static void HealthBar(List<Character> characters)
         {
-            Console.Write($"{characters[0].CharacterName,-30}{"",50}{characters[characters.Count - 1].Job,30}\n");
-            Console.Write($"HP: {characters[0].HitPoints,-26}{"",50}{"HP: " + characters[characters.Count - 1].HitPoints,30}\n");
+            Console.Write($"{characters[0].CharacterName,-30}{"",50}{characters[^1].Job,30}\n");
+            Console.Write($"HP: {characters[0].HitPoints,-26}{"",50}{"HP: " + characters[^1].HitPoints,30}\n");
             Console.Write($"{PlayerBar(characters),-55}{EnemyBar(characters),55}\n");
         }
         public static void FightCount(List<Character> characters)
@@ -87,12 +87,12 @@ namespace MazeGame
         }
         public static void StatBar(List<Character> characters)
         {
-            Console.Write($"{"Job: " + characters[0].Job,-30}{"",50}{"Job: " + characters[characters.Count - 1].Job,30}\n");
-            Console.Write($"{"Str: " + characters[0].Strength,-30}{"",50}{"Str: " + characters[characters.Count - 1].Strength,30}\n");
-            Console.Write($"{"Dex: " + characters[0].Dex,-30}{"",50}{"Dex: " + characters[characters.Count - 1].Dex,30}\n");
-            Console.Write($"{"Int: " + characters[0].Intelligence,-30}{"",50}{"Int: " + characters[characters.Count - 1].Intelligence,30}\n");
-            Console.Write($"{"Armor: " + characters[0].Armor,-30}{"",50}{"Armor: " + characters[characters.Count - 1].Armor,30}\n");
-            Console.Write($"{"Weak To: " + characters[0].WeaknessMod,-30}{"",50}{"Weak To: " + characters[characters.Count - 1].WeaknessMod,30}\n\n");
+            Console.Write($"{"Job: " + characters[0].Job,-30}{"",50}{"Job: " + characters[^1].Job,30}\n");
+            Console.Write($"{"Str: " + characters[0].Strength,-30}{"",50}{"Str: " + characters[^1].Strength,30}\n");
+            Console.Write($"{"Dex: " + characters[0].Dex,-30}{"",50}{"Dex: " + characters[^1].Dex,30}\n");
+            Console.Write($"{"Int: " + characters[0].Intelligence,-30}{"",50}{"Int: " + characters[^1].Intelligence,30}\n");
+            Console.Write($"{"Armor: " + characters[0].Armor,-30}{"",50}{"Armor: " + characters[^1].Armor,30}\n");
+            Console.Write($"{"Weak To: " + characters[0].WeaknessMod,-30}{"",50}{"Weak To: " + characters[^1].WeaknessMod,30}\n\n");
 
         }
         public static void LineBreak()
@@ -116,7 +116,7 @@ namespace MazeGame
         public static string EnemyBar(List<Character> characters)
         {
             string bar = "";
-            for (int j = 0; j < characters[characters.Count - 1].HitPoints; j++)
+            for (int j = 0; j < characters[^1].HitPoints; j++)
             {
                 bar += "=";
             }

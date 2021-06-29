@@ -1,4 +1,6 @@
-﻿    public enum Arsenal
+﻿namespace MazeGame.Helpers
+{
+    public enum Arsenal
     {
         None,
         GreatSword,
@@ -8,3 +10,4 @@
         Club,
         Claw
     }
+}

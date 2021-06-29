@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MazeGame
+namespace MazeGame.Helpers
 {
     public class Dice
     {
@@ -12,7 +10,6 @@ namespace MazeGame
             return rand.Next(1, 21);
         }
 
-
         public static int D8()
         {
             return rand.Next(1, 9);
@@ -20,7 +17,6 @@ namespace MazeGame
 
         public static int D6()
         {
-
             return rand.Next(1, 7);
         }
 
@@ -28,6 +24,7 @@ namespace MazeGame
         {
             return rand.Next(1, 5);
         }
+
         public static int D3()
         {
             return rand.Next(1, 4);

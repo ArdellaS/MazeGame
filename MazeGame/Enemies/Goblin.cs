@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MazeGame.Helpers;
 
-namespace MazeGame
+namespace MazeGame.Enemies
 {
-    class Goblin : Character
-
+    public class Goblin : Character
     {
-        
         public Goblin(string characterName, double hitPoints, int strength, int dex, int intelligence, int armor, Arsenal weapon, Arsenal weaknessMod, bool IsAlive, bool IsPlayer, int attackMod)
             : base(characterName, hitPoints, strength, dex, intelligence, armor, weaknessMod, IsAlive, IsPlayer, attackMod)
         {
@@ -15,6 +11,5 @@ namespace MazeGame
             this.Weapon = weapon;
             this.WeaknessMod = Arsenal.Dagger;
         }
-     
     }
 }

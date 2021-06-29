@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MazeGame
+﻿namespace MazeGame.Helpers
 {
     public abstract class Character
     {
@@ -20,7 +16,7 @@ namespace MazeGame
         public Arsenal Weapon { get; set; }
         public bool IsAlive { get; set; }
 
-        public Character(string characterName, double hitPoints, int strength, int dex, int intelligence, int armor, Arsenal weaknessMod, bool isAlive, bool isPlayer, int attackMod)
+        protected Character(string characterName, double hitPoints, int strength, int dex, int intelligence, int armor, Arsenal weaknessMod, bool isAlive, bool isPlayer, int attackMod)
         {
             CharacterName = characterName;
             HitPoints = hitPoints;
