@@ -10,7 +10,6 @@
         public int Intelligence { get; set; }
         public int Armor { get; set; }
         public Arsenal WeaknessMod { get; set; }
-        public bool Status { get; set; }
         public bool IsPlayer { get; set; }
         public int AttackMod { get; set; }
         public Arsenal Weapon { get; set; }

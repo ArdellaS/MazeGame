@@ -10,9 +10,9 @@ namespace MazeGame.Helpers
         static int _attackDice;
         static int _totalRoll;
         static double _dmgDealt;
+
         public static void PlayerCombat(List<Character> characters, int attackSelection)
         {
-
             if (Hit(characters[0].AttackMod, characters[^1].Armor, attackSelection, out _hitRoll))
             {
                 bool isCrit = false;
@@ -39,10 +39,9 @@ namespace MazeGame.Helpers
                     Console.WriteLine("\nCritical Hit! You have done double damage!\n");
                 }
                 Console.WriteLine($"{characters[0].CharacterName} rolled a {_hitRoll} breaking through enemy defense.\n" +
-                    $"Damage dice roll is {_attackDice} using a {characters[0].Weapon} and hit {characters[^1].Job} dealing {_dmgDealt} damage!\n");
+                    $"Damage dice rolled a {_attackDice} using a {characters[0].Weapon} and hit {characters[^1].Job} dealing {_dmgDealt} damage!\n");
 
                 characters[^1].IsAlive = Death(characters[^1].HitPoints);
-
             }
             else
             {
@@ -69,7 +68,7 @@ namespace MazeGame.Helpers
 
                 Console.Clear();
                 BattleDisplay.UI(characters);
-                if (isCrit == true)
+                if (isCrit)
                 {
                     Console.WriteLine("\nCritical Hit! Monster does double damage!\n");
                 }
@@ -77,7 +76,6 @@ namespace MazeGame.Helpers
                     $"Damage dice roll is {_attackDice} using a {characters[^1].Weapon} and hit {characters[0].CharacterName} dealing {dmgDealt} damage!\n");
 
                 characters[0].IsAlive = Death(characters[0].HitPoints);
-
             }
             else
             {
@@ -86,6 +84,7 @@ namespace MazeGame.Helpers
         }
         public static bool Hit(int attackMod, int Armor, int attackSelection, out int hitRoll)
         {
+            var isHit = false;
 
             if (attackSelection == 1)
             {
@@ -93,11 +92,7 @@ namespace MazeGame.Helpers
                 _totalRoll = hitRoll + attackMod;
                 if (_totalRoll >= Armor)
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    isHit = true;
                 }
             }
             else
@@ -106,15 +101,11 @@ namespace MazeGame.Helpers
                 _totalRoll = hitRoll + attackMod;
                 if (_totalRoll - 2 >= Armor)
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    isHit = true;
                 }
             }
 
-
+            return isHit;
         }
         public static double Damage(Arsenal weapon, Arsenal weaknessMod, int attackMod, out int attackDice)
         {
@@ -149,15 +140,12 @@ namespace MazeGame.Helpers
 
         public static bool Death(double hitPoints)
         {
-            if (hitPoints <= 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            bool isAlive = !(hitPoints <= 0);
+
+            return isAlive;
         }
+
+        //might reward health after boss
         public static void AddHealth(List<Character> characters)
         {
             int x = Dice.D6();

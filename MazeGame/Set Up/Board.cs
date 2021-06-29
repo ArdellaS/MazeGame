@@ -7,13 +7,14 @@ namespace MazeGame.Set_Up
     public class Board
     {
         public static Random rand = new Random();
-        public static int gridWidth = 20;
-        public static int gridHeight = 10;
-        public static char[,] gridWorld = new char[gridHeight, gridWidth];
-        public static int xPosition = XPosition();
-        public static int yPosition = YPosition();
-        public static int mon1X = XPosition();
-        public static int mon1Y = YPosition();
+        public static int _gridWidth = 20;
+        public static int _gridHeight = 10;
+        public static char[,] _gridWorld = new char[_gridHeight, _gridWidth];
+        public static int _xPosition = XPosition();
+        public static int _yPosition = YPosition();
+        public static int _mon1X = XPosition();
+        public static int _mon1Y = YPosition();
+        public static bool _continue = true;
         public static CharacterList characterList = new CharacterList();
 
         public static int XPosition()
@@ -32,34 +33,34 @@ namespace MazeGame.Set_Up
             var doorWidth = XPosition();
             var ringCount = 0;
 
-            while (true)
+            while (_continue)
             {
                 //generates * floor grid
-                for (int i = 0; i < gridHeight; i++)
+                for (int i = 0; i < _gridHeight; i++)
                 {
-                    for (int j = 0; j < gridWidth; j++)
+                    for (int j = 0; j < _gridWidth; j++)
                     {
-                        gridWorld[i, j] = '*';
+                        _gridWorld[i, j] = '*';
                     }
                 }
 
                 //door character
-                gridWorld[doorHeight, doorWidth] = 'O';
+                _gridWorld[doorHeight, doorWidth] = 'O';
 
                 //player character
-                gridWorld[yPosition, xPosition] = 'I';
+                _gridWorld[_yPosition, _xPosition] = 'I';
 
                 //monster character
-                gridWorld[mon1Y, mon1X] = 'X';
+                _gridWorld[_mon1Y, _mon1X] = 'X';
 
                 //checks if fight should begin
-                if (yPosition == mon1Y && xPosition == mon1X)
+                if (_yPosition == _mon1Y && _xPosition == _mon1X)
                 {
                     Fight(ringCount);
                 }
 
                 //checks if character gets ring
-                if (xPosition == doorWidth && yPosition == doorHeight)
+                if (_xPosition == doorWidth && _yPosition == doorHeight)
                 {
                     doorHeight = YPosition();
                     doorWidth = XPosition();
@@ -70,11 +71,11 @@ namespace MazeGame.Set_Up
                 Console.WriteLine("Collect the rings!\n");
 
                 //manages movement board
-                for (int i = 0; i < gridHeight; i++)
+                for (int i = 0; i < _gridHeight; i++)
                 {
-                    for (int j = 0; j < gridWidth; j++)
+                    for (int j = 0; j < _gridWidth; j++)
                     {
-                        Console.Write(gridWorld[i, j]);
+                        Console.Write(_gridWorld[i, j]);
                     }
 
                     Console.WriteLine();
@@ -83,41 +84,41 @@ namespace MazeGame.Set_Up
                 var key = PressAnyKeyToContinue();
 
                 //character movement
-                if (key == ConsoleKey.UpArrow && yPosition > 0)
+                if (key == ConsoleKey.UpArrow && _yPosition > 0)
                 {
-                    yPosition--;
+                    _yPosition--;
                 }
-                else if (key == ConsoleKey.DownArrow && yPosition < gridHeight - 1)
+                else if (key == ConsoleKey.DownArrow && _yPosition < _gridHeight - 1)
                 {
-                    yPosition++;
+                    _yPosition++;
                 }
-                else if (key == ConsoleKey.LeftArrow && xPosition > 0)
+                else if (key == ConsoleKey.LeftArrow && _xPosition > 0)
                 {
-                    xPosition--;
+                    _xPosition--;
                 }
-                else if (key == ConsoleKey.RightArrow && xPosition < gridWidth - 1)
+                else if (key == ConsoleKey.RightArrow && _xPosition < _gridWidth - 1)
                 {
-                    xPosition++;
+                    _xPosition++;
                 }
 
                 //monster 1 movement
                 var step1 = rand.Next(1, 5);
 
-                if (step1 == 1 && mon1Y >= 2)
+                if (step1 == 1 && _mon1Y >= 2)
                 {
-                    mon1Y--;
+                    _mon1Y--;
                 }
-                else if (step1 == 2 && mon1Y <= 8)
+                else if (step1 == 2 && _mon1Y <= 8)
                 {
-                    mon1Y++;
+                    _mon1Y++;
                 }
-                else if (step1 == 3 && mon1X > 2)
+                else if (step1 == 3 && _mon1X > 2)
                 {
-                    mon1X--;
+                    _mon1X--;
                 }
-                else if (step1 == 4 && mon1X < 8)
+                else if (step1 == 4 && _mon1X < 8)
                 {
-                    mon1X++;
+                    _mon1X++;
                 }
             }
         }
@@ -154,14 +155,38 @@ namespace MazeGame.Set_Up
                     break;
                 }
             }
+            if (characterList.ReturnList()[^1].Job == "Dragon")
+            {
+                BattleField.AddHealth(characterList.ReturnList());
+            }
             if (!characterList.ReturnList()[0].IsAlive)
             {
                 Console.Clear();
                 Console.WriteLine($"YOU DIED! GAME OVER!\nYou have defeated {characterList.ReturnList().Count - 2} monsters and collected {ringCount} rings!!\n\n");
                 BattleDisplay.DisplayDead(characterList.ReturnList());
-                Console.WriteLine("Press anykey to restart...");
+                if (!ContinueProgram())
+                {
+                    _continue = false;
+                }
                 Console.Read();
             }
+        }
+        static bool ContinueProgram()
+        {
+            char c;
+
+            do
+            {
+                Console.WriteLine("Would you like to continue? y/n");
+                c = Console.ReadKey().KeyChar;
+                if (c == 'n' || c == 'N')
+                {
+                    return false;
+                }
+            } while (c != 'y' && c != 'Y');
+
+            return true;
+
         }
         public void GamePlay()
         {
@@ -179,6 +204,8 @@ namespace MazeGame.Set_Up
                 BoardMovement();
 
             } while (Continue());
+
+            Console.WriteLine("Happy Adventuring!");
 
         }
 
